@@ -11,6 +11,7 @@ import { BiSearch } from "react-icons/bi";
 import { GrLogout } from "react-icons/gr";
 
 import Button from './Button';
+import useAuthModal from '@/hooks/useAuthModal';
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const user = false;
   const router = useRouter();
+  const authModal = useAuthModal();
 
   const handleLogout = () => {
     console.log("logout Triggered");
@@ -72,9 +74,9 @@ const Header: React.FC<HeaderProps> = ({
             <div className="flex gap-x-4 items-center">
               <Button
                 onClick={handleLogout}
-                className='bg-white'
+                className='bg-white px-6 py-2'
               >
-                <GrLogout />
+                Logout
               </Button>
 
               <Button
@@ -88,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({
             <>
               <div>
                 <Button
-                  onClick={() => console.log("Auth Modal Triggered")}
+                  onClick={authModal.onOpen}
                   className='bg-transparent font-medium text-neutral-300'
                 >
                   Sign Up
@@ -97,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({
 
               <div>
                 <Button
-                  onClick={() => console.log("Auth Modal Triggered")}
+                  onClick={authModal.onOpen}
                   className='bg-transparent font-medium text-neutral-300'
                 >
                   Login
