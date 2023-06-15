@@ -2,6 +2,9 @@
 
 import { TbPlaylist } from "react-icons/tb";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useUser } from "@/hooks/useUser";
+import useAuthModal from "@/hooks/useAuthModal";
+import useUploadModal from "@/hooks/useUploadModal";
 
 interface LibraryProps {
   songs?: string;
@@ -10,6 +13,17 @@ interface LibraryProps {
 const Library: React.FC<LibraryProps> = ({
   songs
 }) => {
+  const { user } = useUser();
+  const authModal = useAuthModal();
+  const uploadModal = useUploadModal();
+
+  const HandleUpload = () => {
+    if (!user) {
+      return authModal.onOpen();
+    }
+    return uploadModal.onOpen();
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between pt-4 px-5">
@@ -22,7 +36,7 @@ const Library: React.FC<LibraryProps> = ({
         </div>
 
         <AiOutlinePlus
-          onClick={() => console.log("Triggered")}
+          onClick={HandleUpload}
           size={20}
           className=" text-neutral-400 cursor-pointer hover:text-white transition"
         />

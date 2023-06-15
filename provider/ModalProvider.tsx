@@ -2,6 +2,7 @@
 
 import AuhtModal from "@/components/AuhtModal";
 import Modal from "@/components/Modal";
+import UploadModal from "@/components/UploadModal";
 import { useEffect, useState } from "react";
 
 interface ModalProviderProps {
@@ -27,6 +28,7 @@ const ModalProvider: React.FC<ModalProviderProps> = ({
   return (
     <>
       <AuhtModal />
+      <UploadModal />
     </>
   )
 };

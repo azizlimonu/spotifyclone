@@ -3,6 +3,8 @@
 import React from 'react'
 import { useRouter } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { toast } from 'react-hot-toast';
 
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { FaUserAlt } from "react-icons/fa";
@@ -12,6 +14,7 @@ import { GrLogout } from "react-icons/gr";
 
 import Button from './Button';
 import useAuthModal from '@/hooks/useAuthModal';
+import { useUser } from '@/hooks/useUser';
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -22,12 +25,22 @@ const Header: React.FC<HeaderProps> = ({
   children,
   className
 }) => {
-  const user = false;
   const router = useRouter();
   const authModal = useAuthModal();
 
-  const handleLogout = () => {
-    console.log("logout Triggered");
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
+
+  const handleLogout = async () => {
+    const { error } = await supabaseClient.auth.signOut();
+    router.refresh();
+
+    if (error) {
+      toast.error(error?.message);
+      console.log(error);
+    }else{
+      toast.success("Loged Out");
+    }
   };
 
   return (
