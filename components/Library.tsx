@@ -4,7 +4,7 @@ import { TbPlaylist } from "react-icons/tb";
 import { AiOutlinePlus } from "react-icons/ai";
 
 interface LibraryProps {
-  songs: string;
+  songs?: string;
 }
 
 const Library: React.FC<LibraryProps> = ({

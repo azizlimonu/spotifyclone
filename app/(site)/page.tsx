@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import ListItem from "@/components/ListItem";
 
 const HomePage = () => {
   return (
@@ -11,7 +12,11 @@ const HomePage = () => {
           </h1>
 
           <div className="grid frid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-3 gap-3">
-            {/* List Item Liked song */}
+            <ListItem
+              name="Liked Song"
+              image="/images/liked.png"
+              href="liked"
+            />
           </div>
         </div>
       </Header>
