@@ -25,21 +25,23 @@ const LikedButton: React.FC<LikeButtonProps> = ({ songId }) => {
   useEffect(() => {
     if (!user?.id) {
       return;
-    };
+    }
 
     // Fetch Api to like song accord userId and songId
     const fetchData = async () => {
       const { data, error } = await supabaseClient
-        .from("liked_songs")
-        .select("*")
-        .eq("User_id", user.id)
-        .eq("song_id", songId)
+        .from('liked_song')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('song_id', songId)
         .single();
 
       if (!error && data) {
         setIsLiked(true);
-      };
-    };
+      }
+    }
+
+    fetchData();
   }, [songId, supabaseClient, user?.id]);
 
   const Icon = isLiked ? AiFillHeart : AiOutlineHeart;
@@ -54,7 +56,7 @@ const LikedButton: React.FC<LikeButtonProps> = ({ songId }) => {
     // if liked then delete liked song from db
     if (isLiked) {
       const { error } = await supabaseClient
-        .from('liked_songs')
+        .from('liked_song')
         .delete()
         .eq('user_id', user.id)
         .eq('song_id', songId)
@@ -67,17 +69,18 @@ const LikedButton: React.FC<LikeButtonProps> = ({ songId }) => {
     } else {
       // if is not liked then insert to liked song db
       const { error } = await supabaseClient
-        .from("liked_songs")
+        .from('liked_song')
         .insert({
           song_id: songId,
           user_id: user.id
         });
 
+
       if (error) {
         toast.error(error.message);
       } else {
         setIsLiked(true);
-        toast.success("Song Liked");
+        toast.success('Liked');
       }
     }
 

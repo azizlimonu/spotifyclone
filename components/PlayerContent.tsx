@@ -79,15 +79,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       format: ['mp3']
     }
   );
-
-  const handlePlay = () => {
-    if (!isPlaying) {
-      play();
-    } else {
-      pause();
-    }
-  }
-
   // play everytime this component mount
   useEffect(() => {
     sound?.play();
@@ -96,6 +87,14 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
       sound?.unload();
     }
   }, [sound]);
+
+  const handlePlay = () => {
+    if (!isPlaying) {
+      play();
+    } else {
+      pause();
+    }
+  }
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
