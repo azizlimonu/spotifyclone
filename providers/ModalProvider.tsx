@@ -1,22 +1,21 @@
 "use client";
 
-import AuhtModal from "@/components/AuhtModal";
-import Modal from "@/components/Modal";
-import UploadModal from "@/components/UploadModal";
 import { useEffect, useState } from "react";
 
-interface ModalProviderProps {
+import AuthModal from "@/components/AuthModal";
+import SubscribeModal from "@/components/SubscribeModal";
+import UploadModal from "@/components/UploadModal";
+import { ProductWithPrice } from "@/types";
 
+interface ModalProviderProps {
+  products: ProductWithPrice[];
 }
 
-// modal component cant seen by servesiderendering
 const ModalProvider: React.FC<ModalProviderProps> = ({
-
+  products
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
-  // prevent hydration server side rendering
-  // if useEffect ever load it means in client side
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -27,10 +26,11 @@ const ModalProvider: React.FC<ModalProviderProps> = ({
 
   return (
     <>
-      <AuhtModal />
+      <AuthModal />
+      <SubscribeModal products={products} />
       <UploadModal />
     </>
-  )
-};
+  );
+}
 
 export default ModalProvider;

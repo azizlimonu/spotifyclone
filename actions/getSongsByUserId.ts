@@ -1,25 +1,24 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 
 import { Song } from "@/types";
 
-import getSong from "./getSong";
-
-const getSongByTitle = async (title: string): Promise<Song[]> => {
+const getSongsByUserId = async (): Promise<Song[]> => {
   const supabase = createServerComponentClient({
     cookies: cookies
   });
 
-  if (!title) {
-    const allSongs = await getSong();
-    return allSongs;
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    console.log(sessionError.message);
+    return [];
   }
 
-  // filter by the title from songs bucket
   const { data, error } = await supabase
     .from('songs')
     .select('*')
-    .ilike('title', `%${title}%`)
+    .eq('user_id', sessionData.session?.user.id)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -29,4 +28,4 @@ const getSongByTitle = async (title: string): Promise<Song[]> => {
   return (data as any) || [];
 };
 
-export default getSongByTitle;
+export default getSongsByUserId;

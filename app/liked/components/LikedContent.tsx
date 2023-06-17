@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Song } from "@/types";
 import { useUser } from "@/hooks/useUser";
 import MediaItem from "@/components/MediaItem";
-import LikedButton from "./LikedButton";
+import LikeButton from "@/components/LikeButton";
 import useOnPlay from "@/hooks/useOnPlay";
 
 interface LikedContentProps {
@@ -29,7 +29,7 @@ const LikedContent: React.FC<LikedContentProps> = ({
 
   if (songs.length === 0) {
     return (
-      <div
+      <div 
         className="
           flex 
           flex-col 
@@ -42,21 +42,21 @@ const LikedContent: React.FC<LikedContentProps> = ({
       </div>
     )
   }
-  return (
+  return ( 
     <div className="flex flex-col gap-y-2 w-full p-6">
       {songs.map((song: any) => (
-        <div
-          key={song.id}
+        <div 
+          key={song.id} 
           className="flex items-center gap-x-4 w-full"
         >
           <div className="flex-1">
             <MediaItem onClick={(id) => onPlay(id)} data={song} />
           </div>
-          <LikedButton songId={song.id} />
+          <LikeButton songId={song.id} />
         </div>
       ))}
     </div>
   );
 }
-
+ 
 export default LikedContent;

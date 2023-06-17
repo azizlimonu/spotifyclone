@@ -1,10 +1,11 @@
+import { useEffect, useState, createContext, useContext } from 'react';
 import {
   useUser as useSupaUser,
   useSessionContext,
   User
 } from '@supabase/auth-helpers-react';
+
 import { UserDetails, Subscription } from '@/types';
-import { createContext, useContext, useEffect, useState } from 'react';
 
 type UserContextType = {
   accessToken: string | null;
@@ -14,11 +15,13 @@ type UserContextType = {
   subscription: Subscription | null;
 };
 
-export const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
 
 export interface Props {
   [propName: string]: any;
-};
+}
 
 export const MyUserContextProvider = (props: Props) => {
   const {
@@ -26,10 +29,8 @@ export const MyUserContextProvider = (props: Props) => {
     isLoading: isLoadingUser,
     supabaseClient: supabase
   } = useSessionContext();
-
   const user = useSupaUser();
   const accessToken = session?.access_token ?? null;
-
   const [isLoadingData, setIsloadingData] = useState(false);
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
@@ -45,22 +46,20 @@ export const MyUserContextProvider = (props: Props) => {
   useEffect(() => {
     if (user && !isLoadingData && !userDetails && !subscription) {
       setIsloadingData(true);
-
       Promise.allSettled([getUserDetails(), getSubscription()]).then(
         (results) => {
           const userDetailsPromise = results[0];
           const subscriptionPromise = results[1];
 
-          if (userDetailsPromise.status === 'fulfilled') {
+          if (userDetailsPromise.status === 'fulfilled')
             setUserDetails(userDetailsPromise.value.data as UserDetails);
-          }
-          if (subscriptionPromise.status === 'fulfilled') {
+
+          if (subscriptionPromise.status === 'fulfilled')
             setSubscription(subscriptionPromise.value.data as Subscription);
-          }
 
           setIsloadingData(false);
         }
-      )
+      );
     } else if (!user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null);
       setSubscription(null);
